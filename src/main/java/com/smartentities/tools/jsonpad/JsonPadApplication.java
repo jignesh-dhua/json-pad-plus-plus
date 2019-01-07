@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 /**
  * 
- * @author Jigneshkumar Dhua
+ * @author Jignesh Dhua
  *
  */
 public class JsonPadApplication extends Application {
