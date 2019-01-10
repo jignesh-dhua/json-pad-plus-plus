@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 SmartEntities.
+ * Copyright 2018 SmartEntities Technology Solutions.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,12 @@
  */
 package com.smartentities.tools.jsonpad;
 
+import org.fxmisc.flowless.VirtualizedScrollPane;
+import org.fxmisc.richtext.CodeArea;
+import org.fxmisc.richtext.LineNumberFactory;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -30,9 +33,16 @@ public class JsonPadApplication extends Application {
 
 	@Override
 	public void start(Stage stage) {
-		Label l = new Label("Hello, JsonPad++");
-		Scene scene = new Scene(new StackPane(l), 640, 480);
+
+		CodeArea codeArea = new CodeArea();
+		codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
+
+		codeArea.replaceText(0, 0, "Hello JsonPad++");
+
+		Scene scene = new Scene(new StackPane(new VirtualizedScrollPane<>(codeArea)), 600, 400);
+		scene.getStylesheets().add(JsonPadApplication.class.getResource("json-pad.css").toExternalForm());
 		stage.setScene(scene);
+		stage.setTitle("JsonPad++");
 		stage.show();
 	}
 
