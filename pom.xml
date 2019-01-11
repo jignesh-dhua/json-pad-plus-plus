@@ -7,7 +7,23 @@
 	<packaging>jar</packaging>
 	<version>1.0-SNAPSHOT</version>
 	<name>JSON Pad ++</name>
-	<url>http://smartentities.com</url>
+	<url>https://github.com/SmartEntities/json-pad-plus-plus</url>
+	
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Jignesh Dhua</name>
+			<email>jignesh.dhua@gmail.com</email>
+		</developer>
+	</developers>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.openjfx</groupId>
