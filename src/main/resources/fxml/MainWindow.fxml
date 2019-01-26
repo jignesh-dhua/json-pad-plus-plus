@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.input.KeyCodeCombination?>
+<?import javafx.scene.layout.*?>
+<BorderPane fx:id="rootBorderPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.65"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.jigneshdhua.tools.jsonpad.controller.ui.MainWindowController"
+            stylesheets="@style.css">
+    <top>
+        <MenuBar BorderPane.alignment="CENTER">
+            <Menu text="%file">
+                <Menu text="%new" fx:id="menuNew">
+                    <graphic>
+                        <ImageView pickOnBounds="true" preserveRatio="true">
+                            <Image url="@../icons/database_start.png"/>
+                        </ImageView>
+                    </graphic>
+                    <accelerator>
+                        <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="DOWN" shortcut="UP"/>
+                    </accelerator>
+                </Menu>
+                <MenuItem fx:id="itemLoad" text="%load">
+                    <graphic>
+                        <ImageView pickOnBounds="true" preserveRatio="true">
+                            <Image url="@../icons/disk_edit.png"/>
+                        </ImageView>
+                    </graphic>
+                    <accelerator>
+                        <KeyCodeCombination alt="UP" code="L" control="DOWN" meta="UP" shift="DOWN" shortcut="UP"/>
+                    </accelerator>
+                </MenuItem>
+                <SeparatorMenuItem mnemonicParsing="false"/>
+                <MenuItem fx:id="itemClose" text="%quit">
+                    <graphic>
+                        <ImageView pickOnBounds="true" preserveRatio="true">
+                            <Image url="@../icons/decline.png"/>
+                        </ImageView>
+                    </graphic>
+                    <accelerator>
+                        <KeyCodeCombination alt="UP" code="Q" control="DOWN" meta="UP" shift="DOWN" shortcut="UP"/>
+                    </accelerator>
+                </MenuItem>
+            </Menu>
+            <Menu text="%help">
+                <MenuItem fx:id="itemAbout" text="%about">
+                    <graphic>
+                        <ImageView pickOnBounds="true" preserveRatio="true">
+                            <Image url="@../icons/star_gold.png"/>
+                        </ImageView>
+                    </graphic>
+                </MenuItem>
+            </Menu>
+        </MenuBar>
+    </top>
+    <center>
+        <TabPane fx:id="tabPane" BorderPane.alignment="CENTER"/>
+    </center>
+    <bottom>
+        <BorderPane BorderPane.alignment="CENTER">
+            <left>
+                <HBox alignment="CENTER_LEFT" BorderPane.alignment="CENTER_LEFT">
+                    <padding>
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+                    </padding>
+                    <Label fx:id="statusLabel"/>
+                </HBox>
+            </left>
+           
+            <padding>
+                <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+            </padding>
+        </BorderPane>
+    </bottom>
+</BorderPane>

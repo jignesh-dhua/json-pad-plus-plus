@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 SmartEntities Technology Solutions.
+ * Copyright 2018 Jignesh Dhua.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.smartentities.tools.jsonpad;
+package com.jigneshdhua.tools.jsonpad;
+
+import com.jigneshdhua.tools.jsonpad.controller.ui.MainWindowController;
+
+import javafx.application.Application;
+import javafx.stage.Stage;
 
 /**
  * 
  * @author Jignesh Dhua
  *
  */
-public class Main {
+public class JsonPadApplication extends Application {
 
-	public static void main(String[] args) {
-		JsonPadApplication.main(args);
-	}
+    @Override
+    public void start(Stage stage) throws Exception {
+        MainWindowController.create(this, stage);
+    }
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        launch(args);
+    }
+
 }
