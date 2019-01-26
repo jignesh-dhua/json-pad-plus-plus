@@ -65,7 +65,7 @@ public final class EditorTabController extends StageController {
     private Paint statusColor;
     private Label statusLabel;
 
-    private EditorTab mEditorTab;
+    private EditorTab editorTab;
 
     static EditorTabController create(Application application, Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(EditorTab.class.getResource("/fxml/EditorTab.fxml"),
@@ -190,7 +190,7 @@ public final class EditorTabController extends StageController {
     }
 
     private EditorTab getEditorTab() {
-        return mEditorTab;
+        return editorTab;
     }
 
     BorderPane getRoot() {
@@ -207,7 +207,7 @@ public final class EditorTabController extends StageController {
     }
 
     void setEditorPane(EditorTab editorTab) {
-        mEditorTab = editorTab;
+        this.editorTab = editorTab;
     }
 
     void setStatusLabel(Label label) {

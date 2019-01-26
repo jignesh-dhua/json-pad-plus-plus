@@ -22,12 +22,12 @@ import java.util.ResourceBundle;
 
 public class EditorTreeTableRow<T> extends TreeTableRow<Pair<String, T>> {
 
-    private final ResourceBundle mResourceBundle;
-    private final ContextMenu mContextMenu;
+    private final ResourceBundle resourceBundle;
+    private final ContextMenu contextMenu;
 
     public EditorTreeTableRow(ResourceBundle resourceBundle) {
-        mResourceBundle = resourceBundle;
-        mContextMenu = createContextMenu();
+        this.resourceBundle = resourceBundle;
+        contextMenu = createContextMenu();
     }
 
     @Override
@@ -37,18 +37,18 @@ public class EditorTreeTableRow<T> extends TreeTableRow<Pair<String, T>> {
         if (treeItem != null && treeItem.getChildren().isEmpty()) {
             setContextMenu(null);
         } else {
-            setContextMenu(mContextMenu);
+            setContextMenu(contextMenu);
         }
     }
 
     private ContextMenu createContextMenu() {
         ContextMenu contextMenu = new ContextMenu();
 
-        MenuItem expandAllItems = new MenuItem(mResourceBundle.getString("expand_all"));
-        MenuItem collapseAllItems = new MenuItem(mResourceBundle.getString("collapse_all"));
+        MenuItem expandAllItems = new MenuItem(resourceBundle.getString("expand_all"));
+        MenuItem collapseAllItems = new MenuItem(resourceBundle.getString("collapse_all"));
         MenuItem separatorItem = new SeparatorMenuItem();
-        MenuItem expandAllChildrenItems = new MenuItem(mResourceBundle.getString("expand_all_children"));
-        MenuItem collapseAllChildrenItems = new MenuItem(mResourceBundle.getString("collapse_all_children"));
+        MenuItem expandAllChildrenItems = new MenuItem(resourceBundle.getString("expand_all_children"));
+        MenuItem collapseAllChildrenItems = new MenuItem(resourceBundle.getString("collapse_all_children"));
 
         expandAllItems.setOnAction(event -> {
             TreeItem<Pair<String, T>> item = getTreeItem();
