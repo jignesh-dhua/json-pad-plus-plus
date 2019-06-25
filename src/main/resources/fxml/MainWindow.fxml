@@ -30,10 +30,32 @@
                         </ImageView>
                     </graphic>
                     <accelerator>
-                        <KeyCodeCombination alt="UP" code="L" control="DOWN" meta="UP" shift="DOWN" shortcut="UP"/>
+                        <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
                     </accelerator>
                 </MenuItem>
                 <SeparatorMenuItem mnemonicParsing="false"/>
+                
+                <MenuItem fx:id="itemSave" text="%save">
+                    <graphic>
+                        <ImageView pickOnBounds="true" preserveRatio="true">
+                            <Image url="@../icons/disk_edit.png"/>
+                        </ImageView>
+                    </graphic>
+                    <accelerator>
+                        <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
+                    </accelerator>
+                </MenuItem>
+                <MenuItem fx:id="itemSaveAs" text="%saveas">
+                    <graphic>
+                        <ImageView pickOnBounds="true" preserveRatio="true">
+                            <Image url="@../icons/disk_edit.png"/>
+                        </ImageView>
+                    </graphic>
+                    <accelerator>
+                        <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="DOWN" shortcut="UP"/>
+                    </accelerator>
+                </MenuItem>
+                 <SeparatorMenuItem mnemonicParsing="false"/>
                 <MenuItem fx:id="itemClose" text="%quit">
                     <graphic>
                         <ImageView pickOnBounds="true" preserveRatio="true">

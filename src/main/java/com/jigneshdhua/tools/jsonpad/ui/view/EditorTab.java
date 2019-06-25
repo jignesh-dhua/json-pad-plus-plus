@@ -19,13 +19,18 @@ import javafx.scene.control.Tab;
 
 import java.io.File;
 
+import com.jigneshdhua.tools.jsonpad.controller.ui.EditorTabController;
+
 public class EditorTab extends Tab {
 
     private File file;
+    
+    private EditorTabController editorTabController; 
 
-    public EditorTab(File file) {
+    public EditorTab(File file, EditorTabController editorTabController) {
         super(file.getName());
         this.file = file;
+        this.editorTabController = editorTabController;
     }
 
     public File getFile() {
@@ -35,6 +40,10 @@ public class EditorTab extends Tab {
     public void setFile(File file) {
         this.file = file;
         setText(file.getName());
+    }
+
+    public EditorTabController getEditorTabController() {
+        return editorTabController;
     }
 
 }

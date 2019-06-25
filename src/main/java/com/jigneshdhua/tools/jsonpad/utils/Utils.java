@@ -15,6 +15,10 @@
  */
 package com.jigneshdhua.tools.jsonpad.utils;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import javafx.scene.control.Alert;
 
 public final class Utils {
@@ -24,5 +28,14 @@ public final class Utils {
         alert.setHeaderText(header);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    public static void saveFile(String content, File file) throws IOException {
+
+        FileWriter fileWriter = null;
+
+        fileWriter = new FileWriter(file);
+        fileWriter.write(content);
+        fileWriter.close();
     }
 }

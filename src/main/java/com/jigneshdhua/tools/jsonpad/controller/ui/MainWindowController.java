@@ -16,6 +16,7 @@
 package com.jigneshdhua.tools.jsonpad.controller.ui;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -60,6 +62,13 @@ public final class MainWindowController extends StageController {
 
     @FXML
     private MenuItem itemLoad;
+    
+    @FXML
+    private MenuItem itemSave;
+    
+    @FXML
+    private MenuItem itemSaveAs;
+    
 
     @FXML
     private MenuItem itemClose;
@@ -73,8 +82,10 @@ public final class MainWindowController extends StageController {
     @FXML
     private Label statusLabel;
 
-    private final ArrayList<EditorTabController> tabControllers;
+   // private final ArrayList<EditorTabController> tabControllers;
     private FileChooser mFileChooser;
+
+    private int tabCounter;
 
     public static void create(Application application, Stage stage) throws Exception {
         FXMLLoader.load(MainWindowController.class.getResource("/fxml/MainWindow.fxml"),
@@ -83,7 +94,7 @@ public final class MainWindowController extends StageController {
 
     public MainWindowController(Application application, Stage stage) {
         super(application, stage);
-        tabControllers = new ArrayList<>();
+        //tabControllers = new ArrayList<>();
     }
 
     @Override
@@ -92,7 +103,7 @@ public final class MainWindowController extends StageController {
 
         MenuItem menuItem = new MenuItem("JSON");
         menuItem.setOnAction((ActionEvent event) -> createNewEditorTab(
-                new File(getResources().getString("new_file") + " " + tabControllers.size()), false));
+                new File(getResources().getString("new_file") + " " +tabCounter /*tabControllers.size()*/), false));
 
         menuNew.getItems().add(menuItem);
 
@@ -100,6 +111,15 @@ public final class MainWindowController extends StageController {
             loadFile(null);
             event.consume();
         });
+        
+        
+       itemSave.setOnAction(event -> {
+           EditorTab editorTab = (EditorTab) tabPane.getSelectionModel().getSelectedItem();
+            saveContent(editorTab.getEditorTabController());
+            event.consume();
+            
+        });
+        
         itemClose.setOnAction(event -> {
             onStageClose();
             event.consume();
@@ -188,15 +208,16 @@ public final class MainWindowController extends StageController {
         try {
             EditorTabController newTabController = EditorTabController.create(getApplication(), getStage());
 
-            EditorTab newTab = new EditorTab(file);
+            EditorTab newTab = new EditorTab(file, newTabController);
             newTab.setClosable(true);
             newTab.setContent(newTabController.getRoot());
             newTab.setOnCloseRequest(event -> {
                 // todo: show yes/no save dialog
-                if (newTabController.isEdited()) {
-                    newTabController.saveContent();
-                }
-                tabControllers.remove(newTabController);
+//                if (newTabController.isEdited()) {
+//                    newTabController.saveContent();
+//                }
+                saveContent(newTabController);
+                //tabControllers.remove(newTabController);
                 if (tabPane.getTabs().size() == 1) {
 
                     statusLabel.setText("");
@@ -204,7 +225,8 @@ public final class MainWindowController extends StageController {
             });
             newTab.selectedProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue) {
-                    EditorTabController tabController = tabControllers.get(tabPane.getTabs().indexOf(newTab));
+                    //EditorTabController tabController = tabControllers.get(tabPane.getTabs().indexOf(newTab));
+                    EditorTabController tabController = newTab.getEditorTabController();
                     tabController.onEditorTabSelected();
 
                 }
@@ -212,10 +234,11 @@ public final class MainWindowController extends StageController {
 
             newTabController.setEditorPane(newTab);
             newTabController.setStatusLabel(statusLabel);
-            tabControllers.add(newTabController);
+            //tabControllers.add(newTabController);
             tabPane.getTabs().add(newTab);
             if (loadFile) {
                 newTabController.loadContent();
+                newTabController.setNew(false);
             }
             // mParserChooser.setDisable(false);
             tabPane.getSelectionModel().select(newTab);
@@ -229,16 +252,38 @@ public final class MainWindowController extends StageController {
         }
     }
 
-    private void onStageClose() {
-        // check if tabs are edited and build a list with them
-        tabControllers.forEach(tabController -> {
-            if (tabController.isEdited()) {
-                // todo: show yes/no save dialog
-                tabController.saveContent();
-            }
-        });
+    private void saveContent(EditorTabController tabController) {
 
-        getStage().hide();
+        if (tabController.isEdited()) {
+            // todo: show yes/no save dialog
+            tabController.saveContent();
+
+            String content = tabController.getContent();
+            File file = tabController.getEditorTab().getFile();
+
+            if (tabController.isNew()) {
+                file = mFileChooser.showSaveDialog(getStage());
+            }
+
+            try {
+                Utils.saveFile(content, file);
+                tabController.setNew(false);
+                tabController.getEditorTab().setFile(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
+    private void onStageClose() {
+        // check if tabs are edited and build a list with them
+//        tabControllers.forEach(tabController -> {
+//            saveContent(tabController);
+//        });
+
+        tabPane.getTabs().forEach(tab ->{
+            saveContent(((EditorTab)tab).getEditorTabController());
+        });
+        getStage().hide();
+    }
 }

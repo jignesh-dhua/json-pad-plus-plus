@@ -20,6 +20,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -67,6 +70,10 @@ public final class EditorTabController extends StageController {
 
     private EditorTab editorTab;
 
+    private boolean isEdited;
+    
+    private boolean isNew = true;
+    
     static EditorTabController create(Application application, Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(EditorTab.class.getResource("/fxml/EditorTab.fxml"),
                 ResourceBundle.getBundle("fxml.ui"), null, new ControllerFactory(application, stage));
@@ -100,6 +107,10 @@ public final class EditorTabController extends StageController {
             event.consume();
         });
 
+        codeArea.setOnKeyPressed(event ->{
+            isEdited = true;
+        });
+        
         SplitPane.setResizableWithParent(codeArea, true);
 
     }
@@ -123,7 +134,7 @@ public final class EditorTabController extends StageController {
         StringBuilder stringBuilder = new StringBuilder();
 
         File file = getEditorTab().getFile();
-        String lineSeparator = String.format("%n");
+        String lineSeparator = String.format(System.lineSeparator());
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             while ((line = reader.readLine()) != null) {
                 stringBuilder.append(line).append(lineSeparator);
@@ -189,7 +200,7 @@ public final class EditorTabController extends StageController {
         statusLabel.setTextFill(statusColor);
     }
 
-    private EditorTab getEditorTab() {
+    public EditorTab getEditorTab() {
         return editorTab;
     }
 
@@ -198,14 +209,34 @@ public final class EditorTabController extends StageController {
     }
 
     boolean isEdited() {
-        Logger.getLogger(TAG).log(Level.INFO, "Not implemented");
-        return false;
+        Logger.getLogger(TAG).log(Level.INFO, "isEdited : "+isEdited);
+        return isEdited;
     }
 
-    void saveContent() {
+    void saveContent()  {
         Logger.getLogger(TAG).log(Level.INFO, "Not implemented: {0}", getEditorTab().getFile());
+        File file = getEditorTab().getFile();
+//        byte[] encoded;
+//        try {
+//            encoded = Files.readAllBytes(file.toPath());
+//        
+//        String content = new String(encoded, Charset.defaultCharset());
+//        
+//        Logger.getLogger(TAG).log(Level.INFO, "Content: {0}", content);
+//       
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        if(!file.exists()) {
+            
+        }
+        
+        Logger.getLogger(TAG).log(Level.INFO, "Tab Content: {0}", codeArea.getText());
     }
 
+    public String getContent() {
+        return codeArea.getText();
+    }
     void setEditorPane(EditorTab editorTab) {
         this.editorTab = editorTab;
     }
@@ -214,4 +245,11 @@ public final class EditorTabController extends StageController {
         statusLabel = label;
     }
 
+    public boolean isNew() {
+        return isNew;
+    }
+
+    public void setNew(boolean isNew) {
+        this.isNew = isNew;
+    }
 }
