@@ -83,7 +83,7 @@ public final class MainWindowController extends StageController {
     private Label statusLabel;
 
    // private final ArrayList<EditorTabController> tabControllers;
-    private FileChooser mFileChooser;
+    private FileChooser fileChooser;
 
     private int tabCounter;
 
@@ -103,7 +103,7 @@ public final class MainWindowController extends StageController {
 
         MenuItem menuItem = new MenuItem("JSON");
         menuItem.setOnAction((ActionEvent event) -> createNewEditorTab(
-                new File(getResources().getString("new_file") + " " +tabCounter /*tabControllers.size()*/), false));
+                new File(getResources().getString("new_file") + " " +tabCounter++ /*tabControllers.size()*/), false));
 
         menuNew.getItems().add(menuItem);
 
@@ -120,6 +120,13 @@ public final class MainWindowController extends StageController {
             
         });
         
+       
+       itemSaveAs.setOnAction(event -> {
+           EditorTab editorTab = (EditorTab) tabPane.getSelectionModel().getSelectedItem();
+           saveAsContent(editorTab.getEditorTabController());
+           event.consume();
+       });
+       
         itemClose.setOnAction(event -> {
             onStageClose();
             event.consume();
@@ -162,8 +169,8 @@ public final class MainWindowController extends StageController {
             event.consume();
         });
 
-        mFileChooser = new FileChooser();
-        mFileChooser.setInitialFileName("");
+        fileChooser = new FileChooser();
+        fileChooser.setInitialFileName("");
         // mFileChooser.getExtensionFilters().addAll(ParserFileType.getExtensionFilters());
 
         Stage stage = getStage();
@@ -190,10 +197,10 @@ public final class MainWindowController extends StageController {
         ResourceBundle resourceBundle = getResources();
 
         if (file == null) {
-            mFileChooser.setTitle(resourceBundle.getString("load_title"));
-            file = mFileChooser.showOpenDialog(getStage());
+            fileChooser.setTitle(resourceBundle.getString("load_title"));
+            file = fileChooser.showOpenDialog(getStage());
             if (file != null) {
-                mFileChooser.setInitialDirectory(file.getParentFile());
+                fileChooser.setInitialDirectory(file.getParentFile());
             }
         }
 
@@ -262,7 +269,7 @@ public final class MainWindowController extends StageController {
             File file = tabController.getEditorTab().getFile();
 
             if (tabController.isNew()) {
-                file = mFileChooser.showSaveDialog(getStage());
+                file = fileChooser.showSaveDialog(getStage());
             }
 
             try {
@@ -275,6 +282,23 @@ public final class MainWindowController extends StageController {
         }
     }
 
+    private void saveAsContent(EditorTabController tabController) {
+        tabController.saveContent();
+
+        String content = tabController.getContent();
+        
+
+        
+            File file = fileChooser.showSaveDialog(getStage());
+        
+        try {
+            Utils.saveFile(content, file);
+            tabController.setNew(false);
+            tabController.getEditorTab().setFile(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     private void onStageClose() {
         // check if tabs are edited and build a list with them
 //        tabControllers.forEach(tabController -> {
