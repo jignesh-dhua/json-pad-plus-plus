@@ -20,9 +20,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -209,13 +206,12 @@ public final class EditorTabController extends StageController {
     }
 
     boolean isEdited() {
-        Logger.getLogger(TAG).log(Level.INFO, "isEdited : "+isEdited);
         return isEdited;
     }
 
-    void saveContent()  {
-        Logger.getLogger(TAG).log(Level.INFO, "Not implemented: {0}", getEditorTab().getFile());
-        File file = getEditorTab().getFile();
+//    void saveContent()  {
+//        Logger.getLogger(TAG).log(Level.INFO, "Not implemented: {0}", getEditorTab().getFile());
+//        File file = getEditorTab().getFile();
 //        byte[] encoded;
 //        try {
 //            encoded = Files.readAllBytes(file.toPath());
@@ -227,13 +223,22 @@ public final class EditorTabController extends StageController {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-        if(!file.exists()) {
+//        if(!file.exists()) {
             
-        }
+//        }
         
-        Logger.getLogger(TAG).log(Level.INFO, "Tab Content: {0}", codeArea.getText());
-    }
+//        Logger.getLogger(TAG).log(Level.INFO, "Tab Content: {0}", codeArea.getText());
+//    }
 
+    public void saveContent() {
+        try {
+            Utils.saveFile(codeArea.getText(), editorTab.getFile());
+            setNew(false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
     public String getContent() {
         return codeArea.getText();
     }
